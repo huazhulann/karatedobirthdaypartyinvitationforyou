@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥋 Karatedo Club — Thiệp Mời Sinh Nhật 🥋</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --red:#e11d2e;
+    --red-dark:#8b0000;
+    --gold:#f5b301;
+    --gold-soft:#ffd76a;
+    --ink:#0a0404;
+  }
+
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:var(--ink);
+    color:#fff;
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+
+  /* ==================================================
+     ✉️ ENVELOPE OVERLAY
+  ================================================== */
+  .envelope-overlay{
+    position:fixed;inset:0;z-index:9999;
+    background:
+      radial-gradient(ellipse at center, rgba(40,6,10,.96) 0%, rgba(0,0,0,.99) 70%);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:36px;
+    cursor:pointer;
+    overflow:hidden;
+    transition:opacity .9s ease, visibility .9s ease;
+    padding:20px;
+  }
+  .envelope-overlay.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .envelope-overlay::before{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(225,29,46,.22), transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(245,179,1,.15), transparent 45%);
+    animation:envBgPulse 5s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes envBgPulse{
+    0%,100%{opacity:.6}
+    50%{opacity:1}
+  }
+
+  .env-stage{
+    position:relative;
+    width:min(340px, 78vw);
+    aspect-ratio:340/240;
+    perspective:1400px;
+    animation:envFloat 4.5s ease-in-out infinite;
+    z-index:2;
+  }
+  @keyframes envFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-14px)}
+  }
+
+  .envelope{
+    position:absolute;inset:0;
+    transform-style:preserve-3d;
+  }
+
+  .env-back{
+    position:absolute;inset:0;
+    background:linear-gradient(160deg,#a8122b,#6e0818 60%,#4a0510);
+    border-radius:10px;
+    box-shadow:
+      0 40px 90px rgba(0,0,0,.85),
+      0 0 80px rgba(225,29,46,.35);
+    z-index:1;
+  }
+
+  .env-letter{
+    position:absolute;
+    left:50%;
+    top:18%;
+    transform:translateX(-50%) translateY(0);
+    width:84%;
+    height:70%;
+    background:linear-gradient(160deg,#fdf9f0,#f1e7d3);
+    border-radius:6px;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);
+    z-index:2;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:10px;
+    padding:16px;
+    transition:transform 1.1s cubic-bezier(.34,1.15,.5,1) .55s;
+    overflow:hidden;
+  }
+  .env-letter::before{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(200,16,46,.08), transparent 60%),
+      repeating-linear-gradient(0deg, transparent 0 22px, rgba(180,140,80,.06) 22px 23px);
+    pointer-events:none;
+  }
+  .envelope.open .env-letter{
+    transform:translateX(-50%) translateY(-108%);
+  }
+
+  .env-letter .lj-kanji{
+    font-size:clamp(2rem,7vw,2.6rem);
+    font-weight:900;
+    color:#c8102e;
+    letter-spacing:4px;
+    line-height:1;
+    text-shadow:0 0 16px rgba(200,16,46,.35);
+    position:relative;z-index:1;
+  }
+  .env-letter .lj-line{
+    width:62%;height:1px;
+    background:linear-gradient(90deg,transparent,#c9a45f,transparent);
+    position:relative;z-index:1;
+  }
+  .env-letter .lj-text{
+    font-size:clamp(.6rem,2.4vw,.72rem);
+    letter-spacing:4px;
+    color:#8a6a3a;
+    text-transform:uppercase;
+    font-weight:700;
+    position:relative;z-index:1;
+    text-align:center;
+  }
+  .env-letter .lj-club{
+    font-size:clamp(.55rem,2.2vw,.66rem);
+    letter-spacing:3px;
+    color:#a8863f;
+    font-weight:800;
+    position:relative;z-index:1;
+    margin-top:4px;
+  }
+
+  .env-front{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(200deg,#d4183a 0%,#a5102a 55%,#7d0a1e 100%);
+    border-radius:10px;
+    z-index:3;
+    box-shadow:
+      inset 0 0 50px rgba(0,0,0,.4),
+      inset 0 2px 0 rgba(255,255,255,.08);
+    overflow:hidden;
+  }
+  .env-front::before{
+    content:'';
+    position:absolute;inset:8px;
+    border:1px solid rgba(245,179,1,.22);
+    border-radius:6px;
+    pointer-events:none;
+  }
+  .env-front::after{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      linear-gradient(225deg, transparent calc(50% - 1px), rgba(245,179,1,.16) 50%, transparent calc(50% + 1px)),
+      linear-gradient(135deg, transparent calc(50% - 1px), rgba(245,179,1,.16) 50%, transparent calc(50% + 1px));
+    pointer-events:none;
+  }
+
+  .env-flap{
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:58%;
+    background:linear-gradient(180deg,#ea2442 0%,#c8102e 45%,#8b0d22 100%);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top center;
+    transform:rotateX(0deg);
+    transition:transform .9s cubic-bezier(.5,0,.2,1);
+    z-index:5;
+    filter:drop-shadow(0 8px 16px rgba(0,0,0,.5));
+    border-radius:10px 10px 0 0;
+  }
+  .env-flap::after{
+    content:'';
+    position:absolute;
+    left:8%;right:8%;top:6px;bottom:22%;
+    border-top:1px solid rgba(245,179,1,.25);
+    border-left:1px solid rgba(245,179,1,.18);
+    border-right:1px solid rgba(245,179,1,.18);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    pointer-events:none;
+  }
+  .envelope.open .env-flap{
+    transform:rotateX(180deg);
+    z-index:0;
+  }
+
+  .env-seal{
+    position:absolute;
+    top:58%;left:50%;
+    transform:translate(-50%,-50%) rotate(0deg);
+    width:clamp(52px,14vw,62px);
+    aspect-ratio:1;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 28%, #ff5568, #c8102e 55%, #7a0a1c 100%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:serif;
+    font-size:clamp(1.3rem,4vw,1.6rem);
+    font-weight:900;
+    color:#ffe9ec;
+    text-shadow:0 1px 3px rgba(0,0,0,.6);
+    box-shadow:
+      0 8px 22px rgba(122,10,28,.75),
+      0 0 0 2px rgba(245,179,1,.5),
+      inset 0 0 16px rgba(0,0,0,.45),
+      inset 0 -3px 8px rgba(0,0,0,.3);
+    z-index:6;
+    transition:opacity .4s ease, transform .5s ease;
+    animation:sealPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes sealPulse{
+    0%,100%{box-shadow:0 8px 22px rgba(122,10,28,.75), 0 0 0 2px rgba(245,179,1,.5), 0 0 0 0 rgba(245,179,1,.5), inset 0 0 16px rgba(0,0,0,.45)}
+    50%{box-shadow:0 8px 22px rgba(122,10,28,.75), 0 0 0 2px rgba(245,179,1,.85), 0 0 0 12px rgba(245,179,1,0), inset 0 0 16px rgba(0,0,0,.45)}
+  }
+  .envelope.open .env-seal{
+    opacity:0;
+    transform:translate(-50%,-50%) rotate(-40deg) scale(.5);
+  }
+
+  .env-hint{
+    position:relative;z-index:2;
+    font-size:.82rem;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    font-weight:800;
+    text-shadow:0 0 20px rgba(245,179,1,.7);
+    animation:hintPulse 2s ease-in-out infinite;
+    text-align:center;
+    padding:0 16px;
+  }
+  .env-hint .ic{
+    display:inline-block;
+    margin-right:8px;
+    animation:hintBob 1.6s ease-in-out infinite;
+  }
+  @keyframes hintPulse{
+    0%,100%{opacity:.55;transform:scale(1)}
+    50%{opacity:1;transform:scale(1.06)}
+  }
+  @keyframes hintBob{
+    0%,100%{transform:translateY(0) rotate(-8deg)}
+    50%{transform:translateY(-4px) rotate(8deg)}
+  }
+
+  .env-spark{
+    position:fixed;
+    width:7px;height:7px;
+    border-radius:50%;
+    background:#ffd76a;
+    box-shadow:0 0 12px #ffd76a, 0 0 26px #f5b301;
+    pointer-events:none;
+    z-index:10001;
+    animation:envSparkFly 1.3s ease-out forwards;
+  }
+  @keyframes envSparkFly{
+    0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+    15%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}
+    100%{transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(.15);opacity:0}
+  }
+
+  /* ==================================================
+     BACKGROUND
+  ================================================== */
+  .bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse at 18% 12%, rgba(225,29,46,.32), transparent 55%),
+      radial-gradient(ellipse at 82% 88%, rgba(245,179,1,.20), transparent 55%),
+      radial-gradient(ellipse at 50% 50%, #1a0507 0%, #080202 65%, #000 100%);
+  }
+
+  .sun{
+    position:fixed;top:50%;left:50%;
+    width:min(88vw,720px);height:min(88vw,720px);
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,45,65,.45) 0%, rgba(225,29,46,.14) 45%, transparent 70%);
+    transform:translate(-50%,-50%);
+    animation:sunBreath 8s ease-in-out infinite;
+    z-index:0;pointer-events:none;
+  }
+  @keyframes sunBreath{
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.5}
+    50%{transform:translate(-50%,-50%) scale(1.16);opacity:1}
+  }
+
+  .rays{
+    position:fixed;top:50%;left:50%;
+    width:150vmax;height:150vmax;
+    transform:translate(-50%,-50%);
+    background:conic-gradient(from 0deg,
+      transparent 0deg, rgba(225,29,46,.06) 5deg, transparent 10deg,
+      transparent 22deg, rgba(245,179,1,.05) 27deg, transparent 32deg,
+      transparent 44deg, rgba(225,29,46,.06) 49deg, transparent 54deg,
+      transparent 66deg, rgba(245,179,1,.05) 71deg, transparent 76deg,
+      transparent 88deg, rgba(225,29,46,.06) 93deg, transparent 98deg,
+      transparent 110deg, rgba(245,179,1,.05) 115deg, transparent 120deg,
+      transparent 132deg, rgba(225,29,46,.06) 137deg, transparent 142deg,
+      transparent 154deg, rgba(245,179,1,.05) 159deg, transparent 164deg,
+      transparent 176deg, rgba(225,29,46,.06) 181deg, transparent 186deg,
+      transparent 198deg, rgba(245,179,1,.05) 203deg, transparent 208deg,
+      transparent 220deg, rgba(225,29,46,.06) 225deg, transparent 230deg,
+      transparent 242deg, rgba(245,179,1,.05) 247deg, transparent 252deg,
+      transparent 264deg, rgba(225,29,46,.06) 269deg, transparent 274deg,
+      transparent 286deg, rgba(245,179,1,.05) 291deg, transparent 296deg,
+      transparent 308deg, rgba(225,29,46,.06) 313deg, transparent 318deg,
+      transparent 330deg, rgba(245,179,1,.05) 335deg, transparent 340deg,
+      transparent 352deg, rgba(225,29,46,.06) 357deg, transparent 360deg);
+    animation:raysSpin 110s linear infinite;
+    opacity:.55;z-index:0;pointer-events:none;
+  }
+  @keyframes raysSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+  .kanji-bg{
+    position:fixed;
+    color:rgba(225,29,46,.13);
+    font-weight:900;
+    z-index:0;pointer-events:none;user-select:none;
+    animation:kanjiDrift linear infinite;
+    text-shadow:0 0 46px rgba(225,29,46,.3);
+  }
+  @keyframes kanjiDrift{
+    0%{transform:translateY(20vh) rotate(0);opacity:0}
+    12%{opacity:1}
+    88%{opacity:1}
+    100%{transform:translateY(-115vh) rotate(28deg);opacity:0}
+  }
+
+  .spark{
+    position:fixed;border-radius:50%;pointer-events:none;z-index:1;
+    animation:sparkUp linear infinite;
+  }
+  @keyframes sparkUp{
+    0%{transform:translateY(0) scale(0);opacity:0}
+    15%{opacity:1;transform:translateY(-12vh) scale(1)}
+    100%{transform:translateY(-105vh) scale(.2);opacity:0}
+  }
+
+  /* ==================================================
+     LAYOUT
+  ================================================== */
+  .wrap{
+    position:relative;z-index:10;
+    max-width:1180px;
+    margin:0 auto;
+    padding:60px 22px 110px;
+  }
+
+  /* ==================================================
+     HERO
+  ================================================== */
+  .hero{text-align:center;padding:20px 0 10px;position:relative}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:9px 26px;
+    border:2px solid var(--red);
+    border-radius:40px;
+    background:rgba(225,29,46,.10);
+    color:var(--gold-soft);
+    font-size:.76rem;font-weight:800;
+    letter-spacing:5px;text-transform:uppercase;
+    box-shadow:0 0 24px rgba(225,29,46,.45);
+    animation:badgePulse 2.4s ease-in-out infinite;
+    margin-bottom:26px;
+  }
+  @keyframes badgePulse{
+    0%,100%{box-shadow:0 0 24px rgba(225,29,46,.45);transform:scale(1)}
+    50%{box-shadow:0 0 48px rgba(225,29,46,.9);transform:scale(1.04)}
+  }
+
+  .kanji-hero{
+    font-size:clamp(4rem,13vw,8rem);
+    font-weight:900;line-height:.95;
+    color:var(--red);
+    text-shadow:
+      0 0 18px var(--red), 0 0 44px var(--red),
+      0 0 88px rgba(255,0,0,.85), 0 0 130px rgba(255,0,0,.5);
+    animation:kanjiHero 4.5s ease-in-out infinite;
+    margin-bottom:10px;letter-spacing:6px;
+  }
+  @keyframes kanjiHero{
+    0%,100%{transform:translateY(0) rotate(-2deg) scale(1)}
+    50%{transform:translateY(-14px) rotate(2deg) scale(1.03)}
+  }
+
+  .title{
+    font-size:clamp(1.9rem,6vw,3.9rem);
+    font-weight:900;text-transform:uppercase;
+    letter-spacing:2px;line-height:1.08;
+    background:linear-gradient(120deg,#fff 0%,var(--gold) 40%,var(--red) 72%,#fff 100%);
+    background-size:250% 250%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 22px rgba(225,29,46,.65));
+    animation:titleFlow 6s ease-in-out infinite;
+    margin-bottom:12px;
+  }
+  @keyframes titleFlow{
+    0%,100%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+  }
+
+  /* ✅ SUBTITLE — KHÔNG XUỐNG DÒNG TRÊN MOBILE */
+  .subtitle{
+    font-size:clamp(.6rem,2.6vw,1.05rem);
+    letter-spacing:clamp(.5px,.5vw,5px);
+    text-transform:uppercase;
+    color:#ffb3bb;
+    margin-bottom:6px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+    padding:0 8px;
+  }
+
+  .osu{
+    font-size:1.4rem;font-weight:900;
+    letter-spacing:14px;color:var(--gold);
+    text-shadow:0 0 22px var(--gold);
+    animation:osuBeat 1.7s ease-in-out infinite;
+    margin-top:8px;
+  }
+  @keyframes osuBeat{
+    0%,100%{transform:scale(1);opacity:.85}
+    50%{transform:scale(1.12);opacity:1}
+  }
+
+  .hero-collage{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:repeat(3,90px);
+    gap:10px;
+    margin:40px auto 10px;
+    max-width:1000px;
+  }
+  .hero-collage .ph{
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+    border:1.5px solid rgba(245,179,1,.35);
+    box-shadow:0 10px 26px rgba(0,0,0,.55);
+    animation:collageFloat 6s ease-in-out infinite;
+  }
+  .hero-collage .ph:nth-child(1){grid-column:1/3;grid-row:1/3;animation-delay:0s}
+  .hero-collage .ph:nth-child(2){grid-column:3/4;grid-row:1/2;animation-delay:.3s}
+  .hero-collage .ph:nth-child(3){grid-column:3/4;grid-row:2/3;animation-delay:.6s}
+  .hero-collage .ph:nth-child(4){grid-column:1/2;grid-row:3/4;animation-delay:.9s}
+  .hero-collage .ph:nth-child(5){grid-column:2/3;grid-row:3/4;animation-delay:1.2s}
+  .hero-collage .ph:nth-child(6){grid-column:3/4;grid-row:3/4;animation-delay:1.5s}
+  @keyframes collageFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-6px)}
+  }
+  .hero-collage .ph img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .7s ease, filter .5s ease;
+    filter:saturate(1.05) contrast(1.05);
+  }
+  .hero-collage .ph:hover img{
+    transform:scale(1.12);
+    filter:saturate(1.25) contrast(1.1) brightness(1.05);
+  }
+  .hero-collage .ph::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55));
+    pointer-events:none;
+  }
+
+  /* ==================================================
+     SECTION TITLE
+  ================================================== */
+  .sec-title{
+    display:flex;align-items:center;justify-content:center;gap:16px;
+    margin:60px 0 34px;
+    text-align:center;
+  }
+  .sec-title i{
+    flex:1;max-width:130px;height:2px;
+    background:linear-gradient(90deg,transparent,var(--red),transparent);
+  }
+  .sec-title h2{
+    font-size:clamp(1.1rem,3.2vw,1.6rem);
+    font-weight:900;letter-spacing:5px;text-transform:uppercase;
+    color:var(--gold);
+    text-shadow:0 0 22px rgba(245,179,1,.55);
+    white-space:nowrap;
+  }
+  .sec-title .ic{
+    font-size:1.5rem;
+    animation:kickSpin 2.4s ease-in-out infinite;
+  }
+  @keyframes kickSpin{
+    0%,100%{transform:rotate(0) scale(1)}
+    25%{transform:rotate(-18deg) scale(1.2)}
+    75%{transform:rotate(18deg) scale(1.2)}
+  }
+
+  /* ==================================================
+     INVITATION LETTER
+  ================================================== */
+  .letter{
+    position:relative;
+    max-width:820px;
+    margin:0 auto;
+    background:linear-gradient(160deg,#fbf6ec,#efe6d4);
+    color:#2a1d10;
+    border-radius:18px;
+    padding:48px 42px;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,.65),
+      0 0 0 1px rgba(245,179,1,.4),
+      inset 0 0 70px rgba(200,170,120,.25);
+    overflow:hidden;
+  }
+  .letter::before{
+    content:'空手道';
+    position:absolute;
+    right:-20px;bottom:-40px;
+    font-size:11rem;font-weight:900;
+    color:rgba(225,29,46,.06);
+    line-height:.8;pointer-events:none;
+    letter-spacing:-6px;
+  }
+  .letter::after{
+    content:'';
+    position:absolute;left:0;top:0;bottom:0;width:8px;
+    background:linear-gradient(180deg,var(--red),var(--gold),var(--red));
+  }
+
+  .letter .seal{
+    position:absolute;top:22px;right:22px;
+    width:64px;height:64px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ff3b4d, var(--red-dark));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:1.5rem;color:#ffe;
+    box-shadow:0 6px 18px rgba(139,0,0,.55), inset 0 0 12px rgba(0,0,0,.4);
+    transform:rotate(-12deg);
+    letter-spacing:-1px;
+    font-family:serif;
+    z-index:2;
+    line-height:1;
+    flex-shrink:0;
+  }
+
+  .letter h3{
+    font-size:clamp(1.1rem,3vw,1.5rem);
+    letter-spacing:3px;text-transform:uppercase;
+    color:var(--red-dark);
+    margin-bottom:6px;
+    font-weight:900;
+  }
+  .letter .small-date{
+    font-size:.78rem;letter-spacing:3px;
+    color:#8a7150;text-transform:uppercase;
+    margin-bottom:26px;
+  }
+  .letter p{
+    font-size:clamp(.95rem,2.5vw,1.08rem);
+    line-height:2;
+    color:#3a2a18;
+    margin-bottom:16px;
+    text-align:justify;
+  }
+  .letter p b{color:var(--red-dark);font-weight:800}
+  .letter .quote{
+    font-style:italic;
+    border-left:4px solid var(--gold);
+    padding:8px 0 8px 20px;
+    margin:24px 0;
+    color:#6a5230;
+    font-size:1rem;
+  }
+  .letter .sign{
+    text-align:right;
+    margin-top:34px;
+    font-family:'Dancing Script','Great Vibes','Segoe Script','Brush Script MT',cursive;
+    font-size:clamp(1.6rem,4.5vw,2rem);
+    color:var(--red-dark);
+    font-weight:700;
+    line-height:1.4;
+    letter-spacing:.5px;
+  }
+  .letter .sign span{
+    display:block;
+    font-family:'Segoe UI',sans-serif;
+    font-size:.72rem;
+    letter-spacing:3px;
+    color:#8a7150;
+    text-transform:uppercase;
+    margin-top:8px;
+    font-weight:600;
+  }
+
+  /* ==================================================
+     CLUB INFO
+  ================================================== */
+  .info-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+  }
+
+  .icard{
+    position:relative;
+    background:linear-gradient(155deg, rgba(38,4,6,.92), rgba(8,1,2,.96));
+    border:1.5px solid rgba(225,29,46,.4);
+    border-radius:18px;
+    padding:28px 24px;
+    overflow:hidden;
+    transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .icard:hover{
+    transform:translateY(-7px);
+    border-color:var(--gold);
+    box-shadow:0 18px 44px rgba(225,29,46,.4);
+  }
+  .icard .ic{
+    font-size:2rem;display:block;margin-bottom:12px;
+    animation:icBob 3s ease-in-out infinite;
+  }
+  @keyframes icBob{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-6px)}
+  }
+  .icard h4{
+    font-size:1rem;letter-spacing:3px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:10px;font-weight:900;
+  }
+  .icard p{color:#e6d7d9;font-size:.94rem;line-height:1.75}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-top:26px;
+  }
+  .stat{
+    text-align:center;
+    padding:26px 12px;
+    border-radius:16px;
+    background:linear-gradient(160deg, rgba(225,29,46,.14), rgba(0,0,0,.55));
+    border:1.5px solid rgba(245,179,1,.35);
+    transition:all .3s ease;
+  }
+  .stat:hover{
+    transform:translateY(-6px) scale(1.03);
+    border-color:var(--gold);
+    box-shadow:0 14px 34px rgba(245,179,1,.35);
+  }
+  .stat .num{
+    font-size:clamp(1.7rem,5vw,2.6rem);
+    font-weight:900;color:var(--gold);
+    text-shadow:0 0 20px rgba(245,179,1,.7);
+    line-height:1;font-variant-numeric:tabular-nums;
+  }
+  .stat .lbl{
+    margin-top:8px;
+    font-size:.66rem;letter-spacing:3px;text-transform:uppercase;
+    color:#ff9aa5;
+  }
+
+  /* ==================================================
+     PHOTO GALLERY
+  ================================================== */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:170px;
+    gap:14px;
+  }
+
+  .gitem{
+    position:relative;
+    border-radius:16px;
+    overflow:hidden;
+    cursor:pointer;
+    border:1.5px solid rgba(245,179,1,.25);
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    transition:transform .4s ease, box-shadow .4s ease, border-color .4s ease;
+  }
+  .gitem:hover{
+    transform:translateY(-6px) scale(1.015);
+    border-color:var(--gold);
+    box-shadow:0 20px 46px rgba(225,29,46,.5);
+    z-index:2;
+  }
+  .gitem img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .8s cubic-bezier(.22,1,.36,1), filter .5s ease;
+    filter:saturate(1.02) contrast(1.04);
+  }
+  .gitem:hover img{
+    transform:scale(1.14);
+    filter:saturate(1.2) contrast(1.08) brightness(1.04);
+  }
+  .gitem::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.78));
+    opacity:.85;transition:opacity .4s ease;
+    pointer-events:none;
+  }
+  .gitem:hover::after{opacity:1}
+
+  .gitem .cap{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:14px 16px;
+    z-index:2;
+    transform:translateY(6px);
+    transition:transform .4s ease;
+  }
+  .gitem:hover .cap{transform:translateY(0)}
+  .gitem .cap .t{
+    font-size:.9rem;font-weight:800;color:#fff;
+    letter-spacing:.5px;line-height:1.3;
+  }
+  .gitem .cap .s{
+    font-size:.68rem;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold-soft);margin-top:3px;
+  }
+  .gitem .zoom{
+    position:absolute;top:12px;right:12px;
+    width:34px;height:34px;border-radius:50%;
+    background:rgba(225,29,46,.85);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.95rem;
+    opacity:0;transform:scale(.6) rotate(-40deg);
+    transition:all .4s ease;
+    z-index:3;
+    box-shadow:0 4px 14px rgba(0,0,0,.5);
+  }
+  .gitem:hover .zoom{opacity:1;transform:scale(1) rotate(0)}
+
+  .g-big{grid-column:span 2;grid-row:span 2}
+  .g-wide{grid-column:span 2}
+  .g-tall{grid-row:span 2}
+
+  /* ==================================================
+     EVENT DETAILS
+  ================================================== */
+  .details{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:16px;
+  }
+  .ditem{
+    padding:26px 18px;text-align:center;
+    border-radius:16px;
+    background:rgba(225,29,46,.07);
+    border:1px solid rgba(225,29,46,.3);
+    transition:all .3s ease;
+  }
+  .ditem:hover{
+    background:rgba(225,29,46,.17);
+    border-color:var(--red);
+    transform:translateY(-6px);
+    box-shadow:0 14px 34px rgba(225,29,46,.4);
+  }
+  .ditem .ic{
+    font-size:2rem;display:block;margin-bottom:10px;
+    animation:icBob 3s ease-in-out infinite;
+  }
+  .ditem .lbl{
+    font-size:.66rem;letter-spacing:3px;text-transform:uppercase;
+    color:#ff8f9b;margin-bottom:8px;
+  }
+  .ditem .val{font-size:1rem;font-weight:800;color:#fff;line-height:1.4}
+
+  .countdown{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    max-width:640px;margin:34px auto 0;
+  }
+  .cd{
+    position:relative;padding:22px 8px;text-align:center;
+    border-radius:16px;
+    background:linear-gradient(160deg, rgba(225,29,46,.18), rgba(0,0,0,.6));
+    border:1.5px solid rgba(225,29,46,.4);
+    overflow:hidden;
+  }
+  .cd::before{
+    content:'';position:absolute;left:0;right:0;top:0;height:3px;
+    background:linear-gradient(90deg,var(--red),var(--gold),var(--red));
+    background-size:200% 100%;
+    animation:barSlide 2.6s linear infinite;
+  }
+  @keyframes barSlide{
+    from{background-position:0 0}
+    to{background-position:200% 0}
+  }
+  .cd .n{
+    display:block;font-size:clamp(1.6rem,5.5vw,2.6rem);
+    font-weight:900;font-variant-numeric:tabular-nums;
+    color:var(--gold);text-shadow:0 0 22px rgba(245,179,1,.8);
+    line-height:1;
+  }
+  .cd .n.tick{animation:tickPop .35s ease}
+  @keyframes tickPop{
+    0%{transform:scale(1)}
+    45%{transform:scale(1.2);color:#fff}
+    100%{transform:scale(1)}
+  }
+  .cd .l{
+    margin-top:8px;font-size:.64rem;letter-spacing:3px;
+    text-transform:uppercase;color:#ff9aa5;
+  }
+
+  /* ==================================================
+     RSVP
+  ================================================== */
+  .rsvp{
+    display:block;width:100%;max-width:460px;
+    margin:36px auto 0;
+    padding:22px 40px;
+    font-family:inherit;
+    font-size:clamp(.95rem,2.6vw,1.12rem);
+    font-weight:900;letter-spacing:4px;text-transform:uppercase;
+    color:#fff;cursor:pointer;
+    border:3px solid var(--gold);
+    border-radius:60px;
+    background:linear-gradient(135deg,var(--red),var(--red-dark));
+    box-shadow:0 12px 36px rgba(225,29,46,.55);
+    position:relative;overflow:hidden;
+    transition:transform .3s ease, box-shadow .3s ease;
+    animation:rsvpGlow 2.6s ease-in-out infinite;
+  }
+  @keyframes rsvpGlow{
+    0%,100%{box-shadow:0 12px 36px rgba(225,29,46,.55), 0 0 0 0 rgba(225,29,46,.6)}
+    50%{box-shadow:0 12px 36px rgba(225,29,46,.8), 0 0 0 16px rgba(225,29,46,0)}
+  }
+  .rsvp::before{
+    content:'';position:absolute;top:0;left:-130%;
+    width:100%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+    transition:left .6s ease;
+  }
+  .rsvp:hover::before{left:130%}
+  .rsvp:hover{transform:translateY(-4px) scale(1.03)}
+  .rsvp:active{transform:translateY(-1px) scale(.98)}
+
+  /* ==================================================
+     FOOTER + WATERMARK
+  ================================================== */
+  .footer{
+    text-align:center;margin-top:56px;padding:26px;
+    color:#6b5558;font-size:.78rem;letter-spacing:2px;
+  }
+  .footer .osu-big{
+    display:block;font-size:1.7rem;font-weight:900;
+    letter-spacing:16px;color:var(--red);
+    text-shadow:0 0 26px var(--red);
+    animation:osuBeat 1.8s ease-in-out infinite;
+    margin-bottom:10px;
+  }
+
+  .watermark{
+    position:fixed;
+    bottom:10px;right:14px;
+    font-size:.68rem;
+    color:rgba(255,255,255,.13);
+    letter-spacing:1.5px;
+    font-weight:500;
+    z-index:5;
+    user-select:none;
+    pointer-events:none;
+    transition:color .3s ease;
+  }
+  .watermark:hover{color:rgba(255,255,255,.3)}
+
+  /* ==================================================
+     LIGHTBOX
+  ================================================== */
+  .lightbox{
+    position:fixed;inset:0;z-index:5000;
+    background:rgba(0,0,0,.94);
+    backdrop-filter:blur(10px);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .lightbox.on{display:flex;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+  .lb-inner{
+    position:relative;
+    max-width:1000px;width:100%;
+    animation:lbPop .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes lbPop{
+    from{transform:scale(.9);opacity:0}
+    to{transform:scale(1);opacity:1}
+  }
+  .lb-inner img{
+    width:100%;max-height:76vh;object-fit:contain;
+    border-radius:14px;
+    box-shadow:0 30px 90px rgba(0,0,0,.9), 0 0 0 2px rgba(245,179,1,.4);
+    display:block;
+  }
+  .lb-cap{
+    text-align:center;margin-top:16px;
+    font-size:1rem;color:#fff;font-weight:700;letter-spacing:1px;
+  }
+  .lb-cap span{
+    display:block;font-size:.72rem;letter-spacing:3px;
+    text-transform:uppercase;color:var(--gold-soft);margin-top:6px;
+  }
+  .lb-close{
+    position:absolute;top:-48px;right:0;
+    width:42px;height:42px;border-radius:50%;
+    background:var(--red);border:none;color:#fff;
+    font-size:1.3rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .3s;
+  }
+  .lb-close:hover{background:var(--gold);color:#000;transform:rotate(90deg)}
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:48px;height:48px;border-radius:50%;
+    background:rgba(225,29,46,.85);border:none;color:#fff;
+    font-size:1.4rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .3s;
+  }
+  .lb-nav:hover{background:var(--gold);color:#000}
+  .lb-prev{left:-64px}
+  .lb-next{right:-64px}
+
+  /* ==================================================
+     MODAL
+  ================================================== */
+  .overlay{
+    position:fixed;inset:0;z-index:4000;
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(9px);
+    display:none;align-items:center;justify-content:center;
+    padding:20px;
+  }
+  .overlay.on{display:flex;animation:fadeIn .3s ease}
+
+  .modal{
+    width:100%;max-width:480px;max-height:92vh;overflow-y:auto;
+    padding:36px 30px;border-radius:22px;
+    background:linear-gradient(155deg,#240406,#080101);
+    border:2px solid var(--red);
+    box-shadow:0 0 70px rgba(225,29,46,.6);
+    animation:modalPop .45s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes modalPop{
+    from{transform:scale(.75) translateY(40px);opacity:0}
+    to{transform:scale(1) translateY(0);opacity:1}
+  }
+  .modal h3{
+    text-align:center;font-size:1.15rem;
+    letter-spacing:4px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:6px;
+    text-shadow:0 0 18px rgba(245,179,1,.7);
+  }
+  .modal .sub{
+    text-align:center;font-size:.76rem;
+    letter-spacing:2px;color:#ff8f9b;margin-bottom:26px;
+  }
+  .field{margin-bottom:18px}
+  .field label{
+    display:block;font-size:.66rem;letter-spacing:3px;
+    text-transform:uppercase;color:#ff8f9b;
+    margin-bottom:8px;font-weight:700;
+  }
+  .field input,.field select{
+    width:100%;padding:14px 16px;border-radius:12px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(225,29,46,.4);
+    color:#fff;font-family:inherit;font-size:.95rem;
+    transition:all .3s;
+  }
+  .field input:focus,.field select:focus{
+    outline:none;border-color:var(--gold);
+    background:rgba(255,255,255,.09);
+    box-shadow:0 0 18px rgba(245,179,1,.4);
+  }
+  .field select option{background:#1a0304}
+  .modal-actions{display:flex;gap:12px;margin-top:26px}
+  .modal-actions button{
+    flex:1;padding:15px;border-radius:12px;border:none;cursor:pointer;
+    font-family:inherit;font-weight:800;
+    font-size:.8rem;letter-spacing:2px;text-transform:uppercase;
+    transition:all .3s;
+  }
+  .btn-ghost{
+    background:rgba(255,255,255,.08);color:#ccc;
+    border:1px solid rgba(255,255,255,.18) !important;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.18)}
+  .btn-go{
+    background:linear-gradient(135deg,var(--red),var(--red-dark));
+    color:#fff;box-shadow:0 6px 24px rgba(225,29,46,.55);
+  }
+  .btn-go:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(225,29,46,.9)}
+
+  .toast{
+    position:fixed;bottom:34px;left:50%;
+    transform:translateX(-50%) translateY(160px);
+    z-index:6000;padding:16px 32px;border-radius:50px;
+    background:linear-gradient(135deg,#1fc94a,#0d7a2a);
+    color:#fff;font-weight:800;letter-spacing:1px;
+    box-shadow:0 12px 38px rgba(31,201,74,.6);
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+    max-width:88vw;text-align:center;font-size:.9rem;
+  }
+  .toast.on{transform:translateX(-50%) translateY(0)}
+
+  .confetti{
+    position:fixed;top:-20px;z-index:5500;pointer-events:none;
+    animation:confFall linear forwards;
+  }
+  @keyframes confFall{
+    to{transform:translateY(112vh) rotate(760deg);opacity:0}
+  }
+
+  .reveal{
+    opacity:0;transform:translateY(44px);
+    transition:opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* ==================================================
+     RESPONSIVE
+  ================================================== */
+  @media(max-width:900px){
+    .gallery{grid-template-columns:repeat(3,1fr);grid-auto-rows:150px}
+  }
+
+  @media(max-width:760px){
+    .wrap{padding:50px 16px 100px}
+    .letter{padding:36px 24px}
+    .letter .seal{
+      width:40px;height:40px;font-size:1rem;
+      top:12px;right:12px;
+      box-shadow:0 4px 12px rgba(139,0,0,.5), inset 0 0 8px rgba(0,0,0,.4);
+    }
+    .letter h3{padding-right:52px}
+    .letter .small-date{padding-right:52px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .hero-collage{
+      grid-template-columns:repeat(2,1fr);
+      grid-template-rows:repeat(3,80px);
+    }
+    .hero-collage .ph:nth-child(1){grid-column:1/3;grid-row:1/3}
+    .hero-collage .ph:nth-child(2){grid-column:1/2;grid-row:3/4}
+    .hero-collage .ph:nth-child(3){grid-column:2/3;grid-row:3/4}
+    .hero-collage .ph:nth-child(4),
+    .hero-collage .ph:nth-child(5),
+    .hero-collage .ph:nth-child(6){display:none}
+    .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:130px}
+    .g-big{grid-column:span 2;grid-row:span 2}
+    .g-wide{grid-column:span 2;grid-row:span 1}
+    .g-tall{grid-row:span 2}
+    .lb-prev{left:8px}
+    .lb-next{right:8px}
+    .lb-close{top:-44px;right:8px}
+    .env-hint{letter-spacing:3px;font-size:.74rem}
+  }
+
+  @media(max-width:480px){
+    .countdown{grid-template-columns:repeat(2,1fr)}
+    .kanji-bg{font-size:4.5rem}
+    .letter p{text-align:left}
+    .sec-title h2{letter-spacing:3px;font-size:1rem}
+    .letter{padding:30px 20px}
+    .letter .seal{
+      width:34px;height:34px;font-size:.85rem;
+      top:10px;right:10px;letter-spacing:0;
+    }
+    .letter h3{padding-right:44px;font-size:1.05rem;letter-spacing:2px;line-height:1.35}
+    .letter .small-date{padding-right:44px;font-size:.7rem;letter-spacing:2px}
+    /* ✅ THU NHỎ SUBTITLE TRÊN MOBILE NHỎ */
+    .subtitle{
+      font-size:.58rem;
+      letter-spacing:.5px;
+    }
+    .watermark{font-size:.6rem;bottom:6px;right:8px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ENVELOPE OVERLAY -->
+<div class="envelope-overlay" id="envelopeOverlay">
+  <div class="env-stage">
+    <div class="envelope" id="envelope">
+      <div class="env-letter">
+        <div class="lj-kanji">空手道</div>
+        <div class="lj-line"></div>
+        <div class="lj-text">Thiệp Mời Sinh Nhật</div>
+        <div class="lj-line"></div>
+        <div class="lj-club">★ KARATEDO CLUB ★</div>
+      </div>
+      <div class="env-back"></div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <div class="env-seal">道</div>
+    </div>
+  </div>
+  <div class="env-hint">
+    <span class="ic">✉️</span>Chạm để mở thiệp
+  </div>
+</div>
+
+<!-- BACKGROUND -->
+<div class="bg"></div>
+<div class="rays"></div>
+<div class="sun"></div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="badge">🥋 Karatedo Club • Birthday Party 🥋</div>
+    <div class="kanji-hero">空手道</div>
+    <h1 class="title">Thiệp Mời<br>Sinh Nhật</h1>
+    <p class="subtitle">✦ Cùng nhau tỏa sáng trên võ đài ✦</p>
+    <div class="osu">O S U !</div>
+
+    <div class="hero-collage reveal">
+      <div class="ph"><img src="https://i.ibb.co/HZVHBNP/1.jpg" alt="Nơi tập luyện CLB"></div>
+      <div class="ph"><img src="https://i.ibb.co/1J0G2LK2/2.jpg" alt="Đội tuyển CLB"></div>
+      <div class="ph"><img src="https://i.ibb.co/KpPXk811/3.jpg" alt="Biểu diễn Kata"></div>
+      <div class="ph"><img src="https://i.ibb.co/ycmjTCr9/4.jpg" alt="Lễ thăng đai"></div>
+      <div class="ph"><img src="https://i.ibb.co/PGmmFmVH/5.jpg" alt="Thi đấu Kumite"></div>
+      <div class="ph"><img src="https://i.ibb.co/4ZQNPKkH/6.jpg" alt="Tập luyện cùng nhau"></div>
+    </div>
+  </header>
+
+  <!-- LỜI MỜI -->
+  <div class="sec-title reveal">
+    <i></i><span class="ic">💌</span><h2>Lời Mời Trân Trọng</h2><i></i>
+  </div>
+
+  <article class="letter reveal">
+    <div class="seal">道</div>
+
+    <h3>Thư Mời Tham Dự Tiệc Sinh Nhật</h3>
+    <div class="small-date">Karatedo Club • Ngày 10 tháng 10 năm 2026</div>
+
+    <p>Lời đầu tiên, xin thay mặt <b>CLB KarateDo</b> gửi đến <b>Quý CLB</b> bạn những lời chúc
+    sức khỏe và thành công tốt đẹp nhất.</p>
+
+    <p>Trên hành trình hoạt động và phát triển, <b>KarateDo Club</b> luôn trân trọng những
+    mối quan hệ đồng hành, giao lưu và gắn kết với các CLB trong cộng đồng.
+    Nhân dịp sinh nhật <b>9 tuổi</b>, CLB KarateDo trân trọng tổ chức
+    <b>Tiệc Sinh Nhật</b> nhằm gặp gỡ, giao lưu, chia sẻ những câu chuyện và
+    cùng nhau tạo nên những kỉ niệm đáng nhớ.</p>
+
+    <div class="quote">
+      "Mỗi cuộc gặp gỡ là một cơ hội để kết nối.<br>
+      Mỗi hành trình đồng hành là một kỷ niệm đáng nhớ."
+    </div>
+
+    <p><b>KarateDo Club</b> rất hân hạnh được đón tiếp đại diện và các thành viên của
+    <b>Quý CLB</b> đến chung vui trong ngày đặc biệt này. Sự hiện diện của <b>Quý CLB</b> sẽ
+    là niềm vui và là món quà ý nghĩa đối với chúng tôi. Rất mong được gặp gỡ
+    và cùng <b>Quý CLB</b> tạo nên một buổi tiệc thật vui vẻ, ấm áp và đáng nhớ.</p>
+
+    <div class="sign">
+      Ban Chủ Nhiệm CLB KarateDo
+      <span>Trân trọng kính mời</span>
+    </div>
+  </article>
+
+  <!-- THÔNG TIN CLB -->
+  <div class="sec-title reveal">
+    <i></i><span class="ic">🥋</span><h2>Về Câu Lạc Bộ</h2><i></i>
+  </div>
+
+  <div class="info-cards reveal">
+    <div class="icard">
+      <span class="ic">🏯</span>
+      <h4>Thành Lập</h4>
+      <p>Câu lạc bộ Karatedo được thành lập <b style="color:var(--red)">từ năm 2017</b> với sứ mệnh lan tỏa tinh thần võ đạo
+      và rèn luyện thể chất cho thế hệ trẻ. Trải qua nhiều năm, CLB đã trở thành
+      mái nhà chung của hàng trăm võ sinh ở mọi lứa tuổi.</p>
+    </div>
+    <div class="icard">
+      <span class="ic">🎯</span>
+      <h4>Triết Lý</h4>
+      <p>Lấy <b style="color:var(--gold)">"Võ đạo"</b> làm gốc — rèn tâm trước,
+      luyện thân sau. Chúng tôi tin rằng một võ sinh giỏi không chỉ mạnh về
+      thể chất, mà còn giàu lòng nhân ái, kỷ luật và tôn trọng đối phương.</p>
+    </div>
+    <div class="icard">
+      <span class="ic">👥</span>
+      <h4>Thành Viên</h4>
+      <p>CLB quy tụ các võ sinh từ đai trắng đến đai đen, cùng đội ngũ huấn luyện
+      viên giàu kinh nghiệm và tận tâm. Đây là môi trường thân thiện, nơi mọi
+      người cùng nhau tiến bộ mỗi ngày.</p>
+    </div>
+    <div class="icard">
+      <span class="ic">🏆</span>
+      <h4>Hoạt Động</h4>
+      <p>Ngoài các buổi tập chính khóa, CLB thường xuyên tham gia thi đấu Kata &
+      Kumite, giao lưu với các CLB bạn, tổ chức các buổi sinh hoạt cộng đồng
+      và những chuyến dã ngoại gắn kết tình đồng đội.</p>
+    </div>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="num" data-count="50" data-suffix="+">0</div><div class="lbl">Võ Sinh</div></div>
+    <div class="stat"><div class="num" data-count="2">0</div><div class="lbl">Huấn Luyện Viên</div></div>
+    <div class="stat"><div class="num" data-count="9">0</div><div class="lbl">Năm Hoạt Động</div></div>
+    <div class="stat"><div class="num" data-count="150" data-suffix="+">0</div><div class="lbl">Huy Chương</div></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="sec-title reveal">
+    <i></i><span class="ic">📸</span><h2>Hình Ảnh Câu Lạc Bộ</h2><i></i>
+  </div>
+
+  <div class="gallery reveal" id="gallery">
+    <div class="gitem g-big" data-title="Nơi tập luyện chính của CLB" data-sub="Nơi mọi hành trình bắt đầu">
+      <img src="https://i.ibb.co/hRFjwVjS/n-i-t-p-luy-n-ch-nh.jpg" alt="Nơi tập luyện chính">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Nơi tập luyện chính của CLB</div><div class="s">Nơi mọi hành trình bắt đầu</div></div>
+    </div>
+    <div class="gitem" data-title="Kata biểu diễn" data-sub="Tinh hoa kỹ thuật">
+      <img src="https://i.ibb.co/WNBhQTVz/kata-bi-u-di-n.jpg" alt="Kata">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Kata biểu diễn</div><div class="s">Tinh hoa kỹ thuật</div></div>
+    </div>
+
+    <div class="gitem" data-title="Kumite đối kháng" data-sub="Bản lĩnh trên sàn đấu">
+      <img src="https://i.ibb.co/k616H6xQ/kumite-i-kh-ng.jpg" alt="Kumite">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Kumite đối kháng</div><div class="s">Bản lĩnh trên sàn đấu</div></div>
+    </div>
+
+    <div class="gitem g-wide" data-title="Giải đấu KarateDo" data-sub="Tự hào mang về huy chương">
+      <img src="https://i.ibb.co/N2r1zZYQ/gi-i-u-karate.jpg" alt="Giải đấu">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Giải đấu KarateDo</div><div class="s">Tự hào mang về huy chương</div></div>
+    </div>
+
+    <div class="gitem" data-title="Tập luyện hàng ngày" data-sub="Mồ hôi và nỗ lực">
+      <img src="https://i.ibb.co/twRGpr1w/t-p-luy-n-h-ng-ng-y.jpg" alt="Luyện tập">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Tập luyện hàng ngày</div><div class="s">Mồ hôi và nỗ lực</div></div>
+    </div>
+
+    <div class="gitem" data-title="Đội tuyển trẻ" data-sub="Tương lai của CLB">
+      <img src="https://i.ibb.co/8gLZbvKd/i-tuy-n-tr.jpg" alt="Đội trẻ">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Đội tuyển trẻ</div><div class="s">Tương lai của CLB</div></div>
+    </div>
+    <div class="gitem g-wide" data-title="Giao lưu cùng các CLB bạn" data-sub="Gắn kết & học hỏi">
+      <img src="https://i.ibb.co/rGBrFZGr/giao-l-u.jpg" alt="Giao lưu">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Giao lưu cùng các CLB bạn</div><div class="s">Gắn kết & học hỏi</div></div>
+    </div>
+    <div class="gitem g-big" data-title="Đêm tiệc sinh nhật CLB" data-sub="Cùng nâng ly vì tình đồng đội">
+      <img src="https://i.ibb.co/PGvRksBB/m-ti-c-sinh-nh-t.jpg" alt="Tiệc sinh nhật">
+      <div class="zoom">🔍</div>
+      <div class="cap"><div class="t">Đêm tiệc sinh nhật CLB</div><div class="s">Cùng nâng ly vì tình đồng đội</div></div>
+    </div>
+  </div>
+
+  <!-- THÔNG TIN BUỔI TIỆC -->
+  <div class="sec-title reveal">
+    <i></i><span class="ic">🎂</span><h2>Thông Tin Buổi Tiệc</h2><i></i>
+  </div>
+
+  <div class="details reveal">
+    <div class="ditem"><span class="ic">📅</span><div class="lbl">Ngày</div><div class="val">Thứ Bảy<br>10 / 10 / 2026</div></div>
+    <div class="ditem"><span class="ic">⏰</span><div class="lbl">Thời Gian</div><div class="val">18:30</div></div>
+    <div class="ditem"><span class="ic">📍</span><div class="lbl">Địa Điểm</div><div class="val">Nhà Hàng The Corner<br>30A Phan Bội Châu, P. Phan Đình Phùng<br>TP. Thái Nguyên</div></div>
+    <div class="ditem"><span class="ic">👕</span><div class="lbl">Trang Phục</div><div class="val">Tự Do</div></div>
+  </div>
+
+  <div class="countdown reveal">
+    <div class="cd"><span class="n" id="cd-d">00</span><div class="l">Ngày</div></div>
+    <div class="cd"><span class="n" id="cd-h">00</span><div class="l">Giờ</div></div>
+    <div class="cd"><span class="n" id="cd-m">00</span><div class="l">Phút</div></div>
+    <div class="cd"><span class="n" id="cd-s">00</span><div class="l">Giây</div></div>
+  </div>
+
+  <button class="rsvp reveal" onclick="openModal()">🥋 Xác Nhận Tham Dự 🥋</button>
+
+  <div class="footer">
+    <span class="osu-big">OSU!</span>
+    <p>KARATEDO CLUB • VÕ ĐẠO TINH THẦN • 2026</p>
+  </div>
+
+</div>
+
+<div class="watermark">Made By huazhulan</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <button class="lb-nav lb-prev" onclick="navLightbox(-1)">‹</button>
+    <button class="lb-nav lb-next" onclick="navLightbox(1)">›</button>
+    <img id="lbImg" src="" alt="">
+    <div class="lb-cap"><span id="lbTitle"></span><span id="lbSub"></span></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3>✍️ Đăng Ký Tham Dự</h3>
+    <p class="sub">Điền thông tin để CLB chuẩn bị chu đáo nhất</p>
+    <form id="rsvpForm">
+      <div class="field"><label>Họ và Tên</label><input type="text" id="fName" placeholder="Nguyễn Văn A..." required></div>
+      <div class="field"><label>Số Điện Thoại</label><input type="tel" id="fPhone" placeholder="09xx xxx xxx" required></div>
+      <div class="field">
+        <label>Cấp Đai</label>
+        <select id="fBelt" required>
+          <option value="">— Chọn cấp đai —</option>
+          <option>🟡 Đai Vàng</option>
+          <option>🟠 Đai Cam</option>
+          <option>🟢 Đai Xanh Lá</option>
+          <option>🔵 Đai Xanh Dương</option>
+          <option>🟣 Đai Tím</option>
+          <option>🟤 Đai Nâu</option>
+          <option>⚫ Đai Đen</option>
+          <option>👨‍🏫 Huấn Luyện Viên</option>
+          <option>🎉 Khách Mời</option>
+        </select>
+      </div>
+      <div class="field"><label>Số Người Tham Dự</label><input type="number" id="fGuests" min="1" max="10" value="1" required></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal()">Hủy</button>
+        <button type="submit" class="btn-go">Gửi 🥋</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">🎉 Đăng ký thành công!</div>
+
+<script>
+/* ================= AUDIO ================= */
+let audioCtx = null;
+function initAudio(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ audioCtx = null; }
+  }
+  return audioCtx;
+}
+function playTone(freq, dur, type, vol){
+  const ctx = initAudio(); if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.setValueAtTime(freq, ctx.currentTime);
+  gain.gain.setValueAtTime(vol || 0.1, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(); osc.stop(ctx.currentTime + dur);
+}
+function sfxPop(){ playTone(880, 0.09, 'triangle', 0.09); }
+function sfxWin(){ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,.22,'sine',.12), i*90)); }
+
+function sfxEnvelope(){
+  const ctx = initAudio(); if(!ctx) return;
+  const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.35, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++){
+    data[i] = (Math.random()*2-1) * Math.pow(1 - i/data.length, 1.5) * 0.35;
+  }
+  const src = ctx.createBufferSource(); src.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass'; filter.frequency.value = 2400; filter.Q.value = 0.7;
+  const g = ctx.createGain(); g.gain.value = 0.22;
+  src.connect(filter); filter.connect(g); g.connect(ctx.destination);
+  src.start();
+  [659, 880, 1175, 1568].forEach((f, i) => {
+    setTimeout(()=>playTone(f, 0.35, 'sine', 0.1), 250 + i*80);
+  });
+}
+
+/* ================= ENVELOPE OPEN ================= */
+const envelopeOverlay = document.getElementById('envelopeOverlay');
+const envelopeEl = document.getElementById('envelope');
+let envelopeOpened = false;
+
+document.body.style.overflow = 'hidden';
+
+function openEnvelope(){
+  if(envelopeOpened) return;
+  envelopeOpened = true;
+
+  envelopeEl.classList.add('open');
+  sfxEnvelope();
+  burstEnvSparkles();
+
+  setTimeout(() => {
+    envelopeOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.reveal').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight * 0.9){
+        el.classList.add('in');
+      }
+    });
+  }, 2000);
+
+  setTimeout(() => {
+    envelopeOverlay.style.display = 'none';
+  }, 3200);
+}
+
+function handleKey(e){
+  if(!envelopeOpened && (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape')){
+    e.preventDefault();
+    openEnvelope();
+  }
+}
+
+envelopeOverlay.addEventListener('click', openEnvelope);
+document.addEventListener('keydown', handleKey);
+
+/* ================= SPARKLES ================= */
+function burstEnvSparkles(){
+  const stage = document.querySelector('.env-stage');
+  if(!stage) return;
+  const rect = stage.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+
+  const colors = ['#ffd76a','#ff5568','#ffffff','#f5b301','#ff8844'];
+
+  for(let i=0;i<28;i++){
+    setTimeout(() => {
+      const s = document.createElement('div');
+      s.className = 'env-spark';
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 110 + Math.random() * 240;
+      s.style.left = cx + 'px';
+      s.style.top = cy + 'px';
+      s.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+      s.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+      const c = colors[Math.floor(Math.random()*colors.length)];
+      s.style.background = c;
+      s.style.boxShadow = `0 0 12px ${c}, 0 0 26px ${c}`;
+      const sz = 5 + Math.random()*6;
+      s.style.width = s.style.height = sz + 'px';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 1400);
+    }, i * 25);
+  }
+}
+
+/* ================= FLOATING KANJI ================= */
+const KANJI = ['空','手','道','武','心','力','拳','気','魂','礼'];
+function spawnKanji(){
+  const el = document.createElement('div');
+  el.className = 'kanji-bg';
+  el.textContent = KANJI[Math.floor(Math.random()*KANJI.length)];
+  el.style.left = Math.random()*95 + 'vw';
+  el.style.bottom = '-15vh';
+  el.style.fontSize = (4 + Math.random()*7) + 'rem';
+  const dur = 15 + Math.random()*12;
+  el.style.animationDuration = dur + 's';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), dur*1000 + 200);
+}
+setInterval(spawnKanji, 2400);
+for(let i=0;i<4;i++) setTimeout(spawnKanji, i*450);
+
+/* ================= SPARKS ================= */
+const SPARK_COLORS = ['#e11d2e','#f5b301','#ff8800','#ffffff'];
+function spawnSpark(){
+  const s = document.createElement('div');
+  s.className = 'spark';
+  const c = SPARK_COLORS[Math.floor(Math.random()*SPARK_COLORS.length)];
+  const sz = 3 + Math.random()*5;
+  s.style.left = Math.random()*100 + 'vw';
+  s.style.bottom = '-10px';
+  s.style.width = s.style.height = sz + 'px';
+  s.style.background = c;
+  s.style.boxShadow = `0 0 10px ${c}, 0 0 22px ${c}`;
+  const dur = 5 + Math.random()*6;
+  s.style.animationDuration = dur + 's';
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(), dur*1000 + 200);
+}
+setInterval(spawnSpark, 340);
+for(let i=0;i<16;i++) setTimeout(spawnSpark, i*110);
+
+/* ================= COUNTDOWN ================= */
+const TARGET = new Date('2026-10-10T18:30:00').getTime();
+const els = {
+  d: document.getElementById('cd-d'),
+  h: document.getElementById('cd-h'),
+  m: document.getElementById('cd-m'),
+  s: document.getElementById('cd-s')
+};
+const prev = {d:'',h:'',m:'',s:''};
+function setNum(el, key, v){
+  const str = String(v).padStart(2,'0');
+  if(prev[key] !== str){
+    el.textContent = str;
+    el.classList.remove('tick'); void el.offsetWidth;
+    el.classList.add('tick');
+    prev[key] = str;
+  }
+}
+function tick(){
+  let diff = TARGET - Date.now();
+  if(diff < 0) diff = 0;
+  setNum(els.d,'d', Math.floor(diff/86400000));
+  setNum(els.h,'h', Math.floor(diff%86400000/3600000));
+  setNum(els.m,'m', Math.floor(diff%3600000/60000));
+  setNum(els.s,'s', Math.floor(diff%60000/1000));
+}
+tick(); setInterval(tick, 1000);
+
+/* ================= REVEAL ON SCROLL ================= */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.classList.add('in');
+      io.unobserve(en.target);
+    }
+  });
+}, {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ================= STATS COUNT-UP ================= */
+const statNums = document.querySelectorAll('[data-count]');
+const statIO = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const el = en.target;
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const step = Math.max(1, Math.ceil(target/40));
+      const t = setInterval(()=>{
+        cur += step;
+        if(cur >= target){ cur = target; clearInterval(t); }
+        el.textContent = cur + suffix;
+      }, 40);
+      statIO.unobserve(el);
+    }
+  });
+}, {threshold:.5});
+statNums.forEach(n=>statIO.observe(n));
+
+/* ================= LIGHTBOX ================= */
+const gallery = document.getElementById('gallery');
+const items = [...gallery.querySelectorAll('.gitem')];
+let lbIndex = 0;
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbTitle = document.getElementById('lbTitle');
+const lbSub = document.getElementById('lbSub');
+
+items.forEach((it, i)=>{
+  it.addEventListener('click', ()=>openLightbox(i));
+});
+
+function openLightbox(i){
+  lbIndex = i;
+  const it = items[i];
+  lbImg.src = it.querySelector('img').src;
+  lbTitle.textContent = it.dataset.title || '';
+  lbSub.textContent = it.dataset.sub || '';
+  lightbox.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  sfxPop();
+}
+function closeLightbox(){
+  lightbox.classList.remove('on');
+  document.body.style.overflow = '';
+}
+function navLightbox(dir){
+  lbIndex = (lbIndex + dir + items.length) % items.length;
+  const it = items[lbIndex];
+  lbImg.src = it.querySelector('img').src;
+  lbTitle.textContent = it.dataset.title || '';
+  lbSub.textContent = it.dataset.sub || '';
+  sfxPop();
+}
+lightbox.addEventListener('click', e=>{
+  if(e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', e=>{
+  if(!lightbox.classList.contains('on')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') navLightbox(-1);
+  if(e.key === 'ArrowRight') navLightbox(1);
+});
+
+/* ================= MODAL RSVP ================= */
+const overlay = document.getElementById('overlay');
+function openModal(){ overlay.classList.add('on'); initAudio(); }
+function closeModal(){ overlay.classList.remove('on'); }
+overlay.addEventListener('click', e=>{ if(e.target === overlay) closeModal(); });
+
+document.getElementById('rsvpForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const name  = document.getElementById('fName').value.trim();
+  const belt  = document.getElementById('fBelt').value;
+  const guests= document.getElementById('fGuests').value;
+
+  closeModal();
+  sfxWin();
+  burstConfetti(150);
+  showToast(`🎉 Cảm ơn ${name} (${belt})! Hẹn gặp ${guests} người tại tiệc — OSU!`);
+  e.target.reset();
+  document.getElementById('fGuests').value = 1;
+});
+
+/* ================= TOAST ================= */
+let toastTimer = null;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('on'), 4200);
+}
+
+/* ================= CONFETTI ================= */
+const CONF_COLORS = ['#e11d2e','#f5b301','#ff8800','#22cc44','#2299ff','#8833dd','#ffffff'];
+function burstConfetti(n){
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random()*100 + 'vw';
+      const sz = 6 + Math.random()*9;
+      c.style.width = sz + 'px';
+      c.style.height = sz + 'px';
+      c.style.background = CONF_COLORS[Math.floor(Math.random()*CONF_COLORS.length)];
+      c.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+      const dur = 2 + Math.random()*2.2;
+      c.style.animationDuration = dur + 's';
+      c.style.animationDelay = (Math.random()*.35) + 's';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), (dur+.6)*1000);
+    }, i*16);
+  }
+}
+</script>
+
+</body>
+</html>
